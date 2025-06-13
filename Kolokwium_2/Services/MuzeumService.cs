@@ -57,10 +57,13 @@ public class MuzeumService : IMuzeumService
         {
             return ExhibitStatus.GALLERYNOTFOUND;
         }
-
+        
+        int exhibitionId = context.Exhibitions.Select(a => a.ExhibitionId).ToList().Max() + 1;
+        
         using (var transaction = await context.Database.BeginTransactionAsync())
         {
-            int exhibitionId = context.Exhibitions.Select(a => a.ExhibitionId).Max() + 1;
+            
+           
             Exhibition exh = new Exhibition()
             {
                 GalleryId = gallery.GalleryId,
@@ -73,7 +76,7 @@ public class MuzeumService : IMuzeumService
 
             foreach (var artwork in exhibition.Artworks)
             {
-                if (context.Artworks.Select( a => a.ArtworkId).Count() != 1)
+                if (context.Artworks.Where(a => a.ArtworkId == artwork.ArtworkId).Count() != 1)
                 {
                     transaction.Rollback();
                     return ExhibitStatus.ARTWORKNOTFOUND;

@@ -22,11 +22,11 @@ public class MuzeumController : ControllerBase
     {
         try
         {
-            return Ok(service.GetExhibitions(id));
+            return Ok(await service.GetExhibitions(id));
         }
         catch (Exception e)
         {
-            return NotFound();
+            return NotFound("Gallery not found");
         }
     }
 
