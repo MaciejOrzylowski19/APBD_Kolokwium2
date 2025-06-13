@@ -63,7 +63,6 @@ public class MuzeumService : IMuzeumService
         using (var transaction = await context.Database.BeginTransactionAsync())
         {
             
-           
             Exhibition exh = new Exhibition()
             {
                 GalleryId = gallery.GalleryId,
@@ -73,6 +72,8 @@ public class MuzeumService : IMuzeumService
                 ExhibitionId = exhibitionId,
                 NumberOfArtworks = exhibition.Artworks.Count
             };
+
+            context.Add(exh);
 
             foreach (var artwork in exhibition.Artworks)
             {
